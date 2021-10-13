@@ -18,7 +18,7 @@ workflows:
             - name: Install npm dependencies
               script: |
                 npm install
-                expo publish
+
             - name: Set Android SDK location
               script: |
                 echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
@@ -42,7 +42,10 @@ workflows:
                 # export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks=alpha) + 1))             
                 export NEW_BUILD_NUMBER=$(($(firebase-app-distribution get-latest-build-number --package-name "$PACKAGE_NAME") + 1))
                 cd android && ./gradlew assembleRelease
-                expo publish --release-channel production
+            - name: Expo 
+              script: |
+                  npx expo-cli login -u nihal@nevercode.io -p Weatherrainy99
+                  npx expo-cli publish --non-interactive --max-workers 1 --release-channel production
             # - name: BrowserStack upload
             #   script: |      
             #      APP_URL=$(curl -u "nihalagazade_JxPH1i:4y5LkQnzzGkv2s7ERZ4q" -X POST "https://api-cloud.browserstack.com/app-automate/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk" | jq -r '.app_url') 
