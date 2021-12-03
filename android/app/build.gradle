@@ -154,18 +154,34 @@ android {
             keyPassword 'android'
         }
     }
+    
+    
     buildTypes {
-        debug {
+      debug {
             signingConfig signingConfigs.debug
         }
-        release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+		release {
+	        signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
+		}
+		// add the code from below line.
+		applicationVariants.all{
+			variant ->
+				variant.outputs.each{
+					output->
+						def name = "GFG.apk"
+						output.outputFileName = name
+				}
+	}
+}
+
+    
+    
+    
+    
+    
+    
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
